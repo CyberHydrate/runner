@@ -19,10 +19,10 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         // ÌøÔ¾
-        //if (Input.GetButtonDown("Jump") && isGrounded)
-        //{
-        //    rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        //}
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
     }
 
     void FixedUpdate()
