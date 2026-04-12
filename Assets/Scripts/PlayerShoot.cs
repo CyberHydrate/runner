@@ -59,6 +59,8 @@ public class PlayerShoot : MonoBehaviour
         {
             //Die();
             Debug.Log("Die");
+            GameManager.instance.GameOver();
         }
     }
 }
+
