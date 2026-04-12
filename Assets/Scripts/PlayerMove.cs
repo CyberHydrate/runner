@@ -1,4 +1,4 @@
-using UnityEngine;
+   using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -6,7 +6,7 @@ public class PlayerMove : MonoBehaviour
     public float jumpForce = 7f;
 
     private Rigidbody2D rb;
-    private bool isGrounded;
+    public bool isGrounded;
 
     public Transform groundCheck;
     public LayerMask groundLayer;
@@ -22,6 +22,7 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            Debug.Log("123");
         }
     }
 

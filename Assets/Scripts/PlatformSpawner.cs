@@ -4,7 +4,7 @@ public class PlatformSpawner : MonoBehaviour
 {
     public GameObject platformPrefab;
     public float platformWidth = 10f; // 一块平台的长度
-    public float platformY = 0f;      // 平台固定高度
+    public float platformY = 2f;      // 平台固定高度
 
     private float nextSpawnX;
 
