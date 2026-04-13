@@ -9,6 +9,7 @@ public class DistanceCounter : MonoBehaviour
     public TextMeshProUGUI counter;
     void FixedUpdate()
     {
-        counter.text = player.transform.position.x.ToString() + " m";
+        float distance = player.transform.position.x;
+        counter.text = ((int)distance).ToString() + " m";
     }
 }
