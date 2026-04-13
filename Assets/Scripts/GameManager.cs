@@ -62,9 +62,22 @@ public class GameManager : MonoBehaviour
             FindObjectOfType<PlayerShoot>().enabled = true;
         }
     }
-    // 游戏结束方法（外部只调用这个）
+
     public void GameOver()
     {
+        if (gameState == 2) return;
+
+        SetGameState(2);
+
+        if (player != null)
+        {
+            Animator _Anim = player.GetComponent<Animator>();
+            if (_Anim != null)
+            {
+                _Anim.SetTrigger("Die"); 
+            }
+        }
+
         // 停止玩家移动
         if (FindObjectOfType<PlayerMove>() != null)
         {
@@ -82,8 +95,8 @@ public class GameManager : MonoBehaviour
         {
             FindObjectOfType<PlayerShoot>().enabled = false;
         }
-        SetGameState(2);
-        
+
+        Debug.Log("lock death anim");
     }
     public void Restart()
     {

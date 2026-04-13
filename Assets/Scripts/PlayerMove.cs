@@ -11,9 +11,13 @@ public class PlayerMove : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundLayer;
 
+    private Animator _anim;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        _anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -24,6 +28,8 @@ public class PlayerMove : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             Debug.Log("123");
         }
+
+        _anim.SetBool("isRun", true);
     }
 
     void FixedUpdate()

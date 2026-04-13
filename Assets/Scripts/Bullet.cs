@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
         // 子弹碰到敌人
         if (collision.CompareTag("Enemy"))
         {
-            Destroy(collision.gameObject); // 消灭敌人
+            collision.GetComponent<EnemyController>().Die();
             Destroy(gameObject);            // 子弹也消失
         }
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerShoot : MonoBehaviour
 {
@@ -12,23 +13,52 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] 
     public int currentBullet;
 
+    public float shootDelay = 0.2f;
+    private Animator _anim;
+    private bool _isShooting = false;
+    private bool _isDead = false;
     void Start()
     {
         currentBullet = maxBullet;
+        _anim = GetComponent<Animator>();
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)&&GameManager.instance.gameState==1)
+        if (Input.GetMouseButtonDown(0) && GameManager.instance.gameState == 1 && !_isShooting && ! _isDead)
+        {
+            if (currentBullet > 0)
+            {
+                StartCoroutine(ShootRoutine());
+            }
+            else
+            {
+                Debug.Log("没子弹了，不播动画");
+            }
+        }
+    }
+
+    //delay shoot anim
+    IEnumerator ShootRoutine()
+    {
+        _isShooting = true;
+
+        _anim.SetTrigger("Shoot");
+
+        yield return new WaitForSeconds(shootDelay);
+
+        if (currentBullet > 0)
         {
             Shoot();
+            currentBullet--;
         }
+
+        _isShooting = false;
     }
 
     void Shoot()
     {
-        if (currentBullet <= 0)
-            return;
+        if (bulletPrefab == null || firePoint == null) return;
 
         // 生成子弹
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
