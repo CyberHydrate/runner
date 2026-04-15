@@ -77,6 +77,7 @@ public class PlayerShoot : MonoBehaviour
         // 判断碰到的物体标签是不是 "AmmoBox"
         if (collision.CompareTag("AmmoBox"))
         {
+            Debug.Log("114");
             // 补满子弹
             currentBullet = maxBullet;
 

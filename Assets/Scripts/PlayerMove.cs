@@ -11,17 +11,27 @@ public class PlayerMove : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundLayer;
 
-    private Animator _anim;
+    public Animator _anim;
 
-    void Start()
+    public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
         _anim = GetComponent<Animator>();
+        
+        //此处编写角色动画状态机初始化
+
     }
 
     void Update()
     {
+        if (GameManager.instance.gameState==1)
+        {
+            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(0, 0);
+        }
         // 跳跃
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -34,17 +44,7 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 左右移动
-        float h = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(h * moveSpeed, rb.velocity.y);
-
-        // 地面检测（不掉下去的关键）
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
 
-        // 角色翻转
-        if (h != 0)
-        {
-            transform.localScale = new Vector3(h, 1, 1);
-        }
     }
 }
