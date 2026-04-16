@@ -28,9 +28,10 @@ public class PlatformSpawner : MonoBehaviour
 
     public void SpawnPlatform()
     {
-        // 严格一块接一块
         Vector3 pos = new Vector3(platformSpawner.transform.position.x, platformY, 0);
         Instantiate(platformPrefab, pos, Quaternion.identity);
 
+        // 关键：往前移动生成点
+        platformSpawner.transform.position += new Vector3(platformWidth, 0, 0);
     }
 }

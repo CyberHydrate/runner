@@ -9,7 +9,7 @@ public class PlayerShoot : MonoBehaviour
     public float bulletSpeed = 10f;
 
     [Header("µ¯Ò©")]
-    public int maxBullet = 30;
+    public int maxBullet = 6;
     [SerializeField] 
     public int currentBullet;
 
@@ -19,7 +19,6 @@ public class PlayerShoot : MonoBehaviour
     private bool _isDead = false;
     void Start()
     {
-        currentBullet = maxBullet;
         _anim = GetComponent<Animator>();
     }
 
@@ -50,7 +49,6 @@ public class PlayerShoot : MonoBehaviour
         if (currentBullet > 0)
         {
             Shoot();
-            currentBullet--;
         }
 
         _isShooting = false;
@@ -79,7 +77,8 @@ public class PlayerShoot : MonoBehaviour
         {
             Debug.Log("114");
             // ²¹Âú×Óµ¯
-            currentBullet = maxBullet;
+            if (currentBullet <= 3) currentBullet = currentBullet + 3;
+            else currentBullet = maxBullet;
 
             // Ïú»Ù²¹¸øÏä
             Destroy(collision.gameObject);
@@ -94,4 +93,3 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 }
-

@@ -226,7 +226,7 @@ Shader "Post/Post_MoHu+SeSan"
 			ENDCG
 		}
 	}
-	CustomEditor "ASEMaterialInspector"
+	// CustomEditor "ASEMaterialInspector"
 	
 	
 }

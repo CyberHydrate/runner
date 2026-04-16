@@ -1,9 +1,9 @@
-   using UnityEngine;
+using UnityEngine;
+using System.Collections;
 
 public class PlayerMove : MonoBehaviour
 {
     public float moveSpeed = 6f;
-    public float jumpForce = 7f;
 
     private Rigidbody2D rb;
     public bool isGrounded;
@@ -13,30 +13,37 @@ public class PlayerMove : MonoBehaviour
 
     public Animator _anim;
 
+    // ====== 闪避参数 ======
+    public float dashDistance = 3f;   // 闪避距离
+    public float dashDuration = 0.2f; // 闪避时间
+    public float dashCooldown = 1.5f; // 冷却时间
+
+    public bool isDashing = false;
+    private bool canDash = true;
+    public bool isInvincible = false;
+
     public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
-        
-        //此处编写角色动画状态机初始化
-
     }
 
     void Update()
     {
-        if (GameManager.instance.gameState==1)
+        if (GameManager.instance.gameState == 1 && !isDashing)
         {
             rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
         }
-        else
+        else if (!isDashing)
         {
             rb.velocity = new Vector2(0, 0);
         }
-        // 跳跃
-        if (Input.GetButtonDown("Jump") && isGrounded)
+
+        // ====== 闪避触发 ======
+        if (Input.GetMouseButtonDown(1) && canDash)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            Debug.Log("123");
+            _anim.SetTrigger("Dash");
+            StartCoroutine(Dash());
         }
 
         _anim.SetBool("isRun", true);
@@ -45,6 +52,36 @@ public class PlayerMove : MonoBehaviour
     void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+    }
 
+    // ====== 闪避逻辑 ======
+    IEnumerator Dash()
+    {
+        isDashing = true;
+        canDash = false;
+        isInvincible = true;
+
+        float elapsed = 0f;
+        float startX = transform.position.x;
+        float targetX = startX + dashDistance;
+
+        while (elapsed < dashDuration)
+        {
+            float newX = Mathf.Lerp(startX, targetX, elapsed / dashDuration);
+            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // 确保到达终点
+        transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
+
+        isInvincible = false;
+        isDashing = false;
+
+        // 冷却
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
     }
 }
